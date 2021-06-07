@@ -9,7 +9,6 @@
 # YOUR CODE HERE 1 to read data
 import geopandas as gpd
 from pyproj import CRS
-data=None
 data=gpd.read_file("Kruger_posts.shp")
 
 # - Check the crs of the input data. If this information is missing, set it as epsg:4326 (WGS84).
@@ -46,6 +45,17 @@ assert len(grouped.groups) == data["userid"].nunique(), "Number of groups should
 import pandas as pd
 from shapely.geometry import LineString, Point
 movements=None
+movements=gpd.GeoDataFrame(columns=["userid","geometry"])
+for key, group in grouped:
+    group = group.sort_values('timestamp')
+    if len(group['geometry'])>=2:
+        line = (LineString(list(group['geometry'])))
+    else:
+        line=None
+    movements.at[count, 'userid'] = key
+    movements.at[count, 'geometry'] = line
+movements.crs = CRS.from_epsg(32735)
+
 # CODE FOR TESTING YOUR SOLUTION
 
 #Check the result
