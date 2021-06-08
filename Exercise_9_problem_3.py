@@ -9,7 +9,7 @@
 # YOUR CODE HERE 1 to read data
 import geopandas as gpd
 from pyproj import CRS
-data=gpd.read_file("Kruger_posts.shp")
+data=gpd.read_file('Kruger_posts.shp')
 
 # - Check the crs of the input data. If this information is missing, set it as epsg:4326 (WGS84).
 # - Reproject the data from WGS84 to `EPSG:32735` -projection which stands for UTM Zone 35S (UTM zone for South Africa) to transform the data into metric system. (don't create a new variable, update the existing variable `data`!)"
@@ -44,7 +44,6 @@ assert len(grouped.groups) == data["userid"].nunique(), "Number of groups should
 # YOUR CODE HERE 4 to set movements
 import pandas as pd
 from shapely.geometry import LineString, Point
-movements=None
 movements=gpd.GeoDataFrame(columns=["userid","geometry"])
 for key, group in grouped:
     group = group.sort_values('timestamp')
@@ -54,7 +53,7 @@ for key, group in grouped:
         line=None
     movements.at[count, 'userid'] = key
     movements.at[count, 'geometry'] = line
-
+movements.crs = CRS.from_epsg(32735)
 
 # CODE FOR TESTING YOUR SOLUTION
 
@@ -69,7 +68,7 @@ print(movements["geometry"].head())
 # - Calculate the lenghts of the lines into a new column called ``distance`` in ``movements`` GeoDataFrame.
 
 # YOUR CODE HERE 5 to calculate distance
-movements.crs = CRS.from_epsg(32735)
+
 
 def cal_distance(x):
     if x['geometry'] is None:
@@ -96,7 +95,7 @@ print(min(movements['distance']))
 # - Finally, save the movements of into a Shapefile called ``some_movements.shp``
 
 # YOUR CODE HERE 7 to save as Shapefile
-
+movements.to_file("some_movements.shp")
 # CODE FOR TESTING YOUR SOLUTION
 
 import os
