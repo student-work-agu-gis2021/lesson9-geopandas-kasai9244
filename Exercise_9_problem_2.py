@@ -14,11 +14,8 @@ from shapely.geometry import Point
 data = pd.read_csv("data/some_posts.csv")
 data["geometry"]=""
 
-
-p = lambda row:Point(row['lat'],row['lon'])
-data['geometry'] = data.apply(p, axis=1)
-
-
+for i in data.iterrows():
+  i[1]["geometry"]=Point(i[1]["lat"],i[1]["lon"])
 # CODE FOR TESTING YOUR SOLUTION
 
 # Check the result
