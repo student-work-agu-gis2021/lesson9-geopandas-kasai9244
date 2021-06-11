@@ -45,6 +45,7 @@ assert len(grouped.groups) == data["userid"].nunique(), "Number of groups should
 import pandas as pd
 from shapely.geometry import LineString, Point
 movements=gpd.GeoDataFrame(columns=["userid","geometry"])
+count=0
 for key, group in grouped:
     group = group.sort_values('timestamp')
     if len(group['geometry'])>=2:
@@ -53,6 +54,7 @@ for key, group in grouped:
         line=None
     movements.at[count, 'userid'] = key
     movements.at[count, 'geometry'] = line
+    count = count+1
 movements.crs = CRS.from_epsg(32735)
 
 # CODE FOR TESTING YOUR SOLUTION
@@ -95,7 +97,8 @@ print(min(movements['distance']))
 # - Finally, save the movements of into a Shapefile called ``some_movements.shp``
 
 # YOUR CODE HERE 7 to save as Shapefile
-movements.to_file("some_movements.shp")
+fp="some_movements.shp"
+movements.to_file(fp)
 # CODE FOR TESTING YOUR SOLUTION
 
 import os
