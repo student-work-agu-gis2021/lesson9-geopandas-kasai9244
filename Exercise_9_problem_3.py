@@ -91,7 +91,7 @@ movements.head()
 #  - What was the maximum distance travelled in meters?
 
 # YOUR CODE HERE 6 to find max, min,mean of the distance.
-print(mean(movements['distance']))
+print(movements['distance'].mean())
 print(max(movements['distance'].dropna()))
 print(min(movements['distance']))
 # - Finally, save the movements of into a Shapefile called ``some_movements.shp``
